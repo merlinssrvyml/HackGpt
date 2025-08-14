@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  hackgpt:
+    build: .
+    container_name: hackgpt
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./reports:/reports
+      - ./config.ini:/hackgpt/config.ini
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    stdin_open: true
+    tty: true
+    network_mode: host
+    privileged: true
+    command: ["--web"]
+
+  hackgpt-cli:
+    build: .
+    container_name: hackgpt-cli
+    volumes:
+      - ./reports:/reports
+      - ./config.ini:/hackgpt/config.ini
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    stdin_open: true
+    tty: true
+    network_mode: host
+    privileged: true
+    profiles: ["cli"]

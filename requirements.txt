@@ -1,0 +1,9 @@
+requests>=2.31.0
+openai>=1.0.0
+rich>=13.0.0
+speechrecognition>=3.10.0
+pyttsx3>=2.90
+pypandoc>=1.12
+cvss>=3.0
+flask>=2.3.0
+pathlib2>=2.3.0
