@@ -1,32 +1,278 @@
 version: '3.8'
 
 services:
-  hackgpt:
-    build: .
-    container_name: hackgpt
+  # PostgreSQL Database
+  hackgpt-database:
+    image: postgres:15-alpine
+    container_name: hackgpt-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hackgpt
+      POSTGRES_USER: hackgpt
+      POSTGRES_PASSWORD: hackgpt123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
-      - "5000:5000"
-    volumes:
-      - ./reports:/reports
-      - ./config.ini:/hackgpt/config.ini
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
-    stdin_open: true
-    tty: true
-    network_mode: host
-    privileged: true
-    command: ["--web"]
+      - "5432:5432"
+    networks:
+      - hackgpt-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hackgpt -d hackgpt"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  hackgpt-cli:
-    build: .
-    container_name: hackgpt-cli
+  # Redis Cache
+  hackgpt-redis:
+    image: redis:7-alpine
+    container_name: hackgpt-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass hackgpt123
     volumes:
-      - ./reports:/reports
-      - ./config.ini:/hackgpt/config.ini
+      - redis_data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+    ports:
+      - "6379:6379"
+    networks:
+      - hackgpt-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # HackGPT Main Application
+  hackgpt-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackgpt-app
+    restart: unless-stopped
+    depends_on:
+      hackgpt-database:
+        condition: service_healthy
+      hackgpt-redis:
+        condition: service_healthy
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
-    stdin_open: true
-    tty: true
-    network_mode: host
-    privileged: true
-    profiles: ["cli"]
+      - DATABASE_URL=postgresql://hackgpt:hackgpt123@hackgpt-database:5432/hackgpt
+      - REDIS_URL=redis://:hackgpt123@hackgpt-redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - LOG_LEVEL=INFO
+      - ENABLE_WEB_DASHBOARD=true
+      - ENABLE_API_SERVER=true
+    volumes:
+      - ./reports:/app/reports
+      - ./logs:/app/logs
+      - ./wordlists:/app/wordlists
+      - ./tools:/app/tools
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"  # API Server
+      - "8080:8080"  # Web Dashboard
+    networks:
+      - hackgpt-network
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Celery Worker for Background Tasks
+  hackgpt-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackgpt-worker
+    restart: unless-stopped
+    command: celery -A performance.parallel_processor worker --loglevel=info --concurrency=4
+    depends_on:
+      hackgpt-database:
+        condition: service_healthy
+      hackgpt-redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://hackgpt:hackgpt123@hackgpt-database:5432/hackgpt
+      - REDIS_URL=redis://:hackgpt123@hackgpt-redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./reports:/app/reports
+      - ./logs:/app/logs
+      - ./wordlists:/app/wordlists
+      - ./tools:/app/tools
+    networks:
+      - hackgpt-network
+    deploy:
+      replicas: 2
+
+  # Celery Beat Scheduler
+  hackgpt-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackgpt-scheduler
+    restart: unless-stopped
+    command: celery -A performance.parallel_processor beat --loglevel=info
+    depends_on:
+      hackgpt-database:
+        condition: service_healthy
+      hackgpt-redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://hackgpt:hackgpt123@hackgpt-database:5432/hackgpt
+      - REDIS_URL=redis://:hackgpt123@hackgpt-redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - hackgpt-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: hackgpt-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - hackgpt-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: hackgpt-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=hackgpt123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - hackgpt-network
+    depends_on:
+      - prometheus
+
+  # Elasticsearch for Logging
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: hackgpt-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - hackgpt-network
+
+  # Kibana for Log Visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: hackgpt-kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - hackgpt-network
+    depends_on:
+      - elasticsearch
+
+  # Consul for Service Discovery
+  consul:
+    image: consul:latest
+    container_name: hackgpt-consul
+    restart: unless-stopped
+    command: agent -server -bootstrap-expect=1 -ui -client=0.0.0.0 -data-dir=/consul/data
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - consul_data:/consul/data
+    networks:
+      - hackgpt-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: hackgpt-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - hackgpt-network
+    depends_on:
+      - hackgpt-app
+
+  # Flower for Celery Monitoring
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackgpt-flower
+    restart: unless-stopped
+    command: celery -A performance.parallel_processor flower --port=5555 --broker=redis://:hackgpt123@hackgpt-redis:6379/0
+    ports:
+      - "5555:5555"
+    environment:
+      - REDIS_URL=redis://:hackgpt123@hackgpt-redis:6379/0
+    networks:
+      - hackgpt-network
+    depends_on:
+      - hackgpt-redis
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  consul_data:
+    driver: local
+
+networks:
+  hackgpt-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

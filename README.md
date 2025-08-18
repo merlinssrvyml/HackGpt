@@ -1,328 +1,740 @@
-# 🔥 HackGPT - AI-Powered Penetration Testing Automation Tool
+<div align="center">
+  <img src="public/hackgpt-logo.png" alt="HackGPT Enterprise Logo" width="400" height="auto">
+  
+  <h1>🚀 HackGPT Enterprise</h1>
+  <h3>AI-Powered Penetration Testing Platform</h3>
+  
+  <p>
+    <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python 3.8+">
+    <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-orange.svg" alt="Multi-Platform">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License">
+    <img src="https://img.shields.io/badge/AI-GPT%20%7C%20Local%20LLM%20%7C%20ML-purple.svg" alt="AI Powered">
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/Architecture-Microservices-red.svg" alt="Microservices">
+    <img src="https://img.shields.io/badge/Cloud-Docker%20%7C%20Kubernetes-lightblue.svg" alt="Cloud Native">
+    <img src="https://img.shields.io/badge/Version-2.0.0-success.svg" alt="Version 2.0.0">
+    <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg" alt="Production Ready">
+  </p>
+</div>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python 3.8+">
-  <img src="https://img.shields.io/badge/Platform-Kali%20Linux-orange.svg" alt="Kali Linux">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License">
-  <img src="https://img.shields.io/badge/AI-GPT%20%7C%20Local%20LLM-purple.svg" alt="AI Powered">
-</p>
+**HackGPT Enterprise** is a production-ready, cloud-native AI-powered penetration testing platform designed for enterprise security teams. It combines advanced AI, machine learning, microservices architecture, and comprehensive security frameworks to deliver professional-grade cybersecurity assessments.
 
-HackGPT is a production-ready AI-powered penetration testing automation tool designed specifically for Kali Linux. It follows the standard 6-phase penetration testing methodology while leveraging AI for intelligent decision-making, tool selection, and report generation.
+**Created by [Yashab Alam](https://github.com/yashab-cyber), Founder & CEO of [ZehraSec](https://www.zehrasec.com)**
 
-## ✨ Features
+> 💰 **Support the Project**: [Donate to HackGPT Development](DONATE.md) | Help us build the future of AI-powered penetration testing!
 
-### 🤖 AI-Powered Intelligence
-- **Dual AI Mode**: OpenAI API (online) or Local LLM with Ollama (offline)
-- **Smart Tool Selection**: AI recommends optimal tools and commands
-- **Intelligent Analysis**: Automated vulnerability assessment and risk scoring
-- **Context-Aware Decisions**: AI learns from previous phases to guide next steps
+## 🏢 Enterprise Features
 
-### 🛡️ Complete Penetration Testing Framework
-- **Phase 1**: Planning & Reconnaissance (Passive/Active OSINT)
-- **Phase 2**: Scanning & Enumeration (Network/Web/Service Discovery)
-- **Phase 3**: Exploitation (Safe, Confirmed Exploitation)
-- **Phase 4**: Post-Exploitation (Privilege Escalation, Lateral Movement)
-- **Phase 5**: Reporting (Technical & Executive Reports)
-- **Phase 6**: Retesting (Validation After Remediation)
+### 🤖 Advanced AI Engine
+- **Multi-Model Support**: OpenAI GPT-4, Local LLM (Ollama), TensorFlow, PyTorch
+- **Machine Learning**: Pattern recognition, anomaly detection, behavioral analysis
+- **Zero-Day Detection**: ML-powered vulnerability discovery and correlation
+- **Risk Intelligence**: CVSS scoring, impact assessment, exploit prioritization
+- **Automated Reporting**: Executive summaries, technical details, compliance mapping
 
-### 🔧 Automated Tool Management
-- **Auto-Installation**: Missing tools are installed automatically
-- **Tool Integration**: 20+ integrated pentesting tools
-- **Custom Scripts**: Downloads and configures specialized tools from GitHub
+### 🛡️ Enterprise Security & Compliance
+- **Authentication**: RBAC + LDAP/Active Directory integration
+- **Authorization**: Role-based permissions (Admin, Lead, Senior, Pentester, Analyst)
+- **Compliance**: OWASP, NIST, ISO27001, SOC2, PCI-DSS frameworks
+- **Audit Logging**: Comprehensive activity tracking and forensics
+- **Data Protection**: AES-256-GCM encryption, JWT tokens, secure sessions
 
-### 🎯 Multiple Interfaces
-- **CLI Mode**: Terminal-based dark hacker interface
-- **Web Dashboard**: Flask-based web interface
-- **Voice Commands**: Speech recognition and text-to-speech
-- **Batch Mode**: Command-line arguments for automation
+### 🏗️ Cloud-Native Architecture
+- **Microservices**: Docker containers with Kubernetes orchestration
+- **Service Discovery**: Consul-based service registry
+- **Load Balancing**: Nginx reverse proxy with auto-scaling
+- **Multi-Cloud**: AWS, Azure, GCP deployment support
+- **High Availability**: Circuit breakers, health checks, failover
 
-### 📊 Advanced Reporting
-- **AI-Generated Reports**: Technical and executive summaries
-- **Multiple Formats**: Markdown, JSON, PDF export
-- **CVSS Scoring**: Automated vulnerability scoring
-- **Timestamped Results**: All results saved with timestamps
+### ⚡ Performance & Scalability
+- **Parallel Processing**: Celery-based distributed task execution
+- **Multi-Layer Caching**: Redis + memory caching with TTL management
+- **Database**: PostgreSQL with connection pooling and replication
+- **Real-Time**: WebSocket dashboards with live updates
+- **Auto-Scaling**: Worker pools adapt to workload demands
+
+### 📊 Enterprise Reporting & Analytics
+- **Dynamic Reports**: HTML, PDF, JSON, XML, CSV export formats
+- **Real-Time Dashboards**: Prometheus + Grafana monitoring stack
+- **Log Analytics**: ELK stack (Elasticsearch + Kibana) integration
+- **Executive Summaries**: AI-generated business impact assessments
+- **Compliance Reports**: Framework-specific compliance documentation
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Kali Linux (Desktop, VM, or Termux + NetHunter)
-- Python 3.8+
-- Internet connection (for tool updates and online AI mode)
+- **Operating System**: Linux (Ubuntu/Debian/RHEL/CentOS), macOS, or Windows WSL2
+- **Python**: 3.8+ with pip and virtual environment support
+- **Docker**: For containerized deployment (recommended)
+- **Resources**: Minimum 4GB RAM, 20GB disk space
 
-### Installation
+### Enterprise Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/HackGPT.git
+git clone https://github.com/yashab-cyber/HackGPT.git
 cd HackGPT
 
-# Run the installation script
+# Run enterprise installer (sets up all services)
 chmod +x install.sh
 ./install.sh
 
-# Optional: Set OpenAI API key for online AI mode
-export OPENAI_API_KEY='your-api-key-here'
+# Configure environment
+cp .env.example .env
+# Edit .env with your API keys and settings
+nano .env
+
+# Verify installation
+python3 test_installation.py
 ```
 
-### Basic Usage
+### Deployment Options
 
+#### 1. Standalone Enterprise Mode
 ```bash
-# Interactive mode (recommended for beginners)
-./hackgpt.py
+# Activate virtual environment
+source venv/bin/activate
 
-# Full automated pentest
-./hackgpt.py --target example.com --scope "Web application" --auth-key "AUTH123"
-
-# Web dashboard
-./hackgpt.py --web
-
-# Voice command mode
-./hackgpt.py --voice
+# Run enterprise application
+python3 hackgpt_v2.py
 ```
+
+#### 2. API Server Mode
+```bash
+# Start REST API server
+python3 hackgpt_v2.py --api
+
+# API available at: http://localhost:8000
+# Health check: http://localhost:8000/api/health
+```
+
+#### 3. Web Dashboard Mode
+```bash
+# Start web dashboard
+python3 hackgpt_v2.py --web
+
+# Dashboard available at: http://localhost:8080
+```
+
+#### 4. Full Enterprise Stack (Recommended)
+```bash
+# Deploy complete microservices stack
+docker-compose up -d
+
+# Services:
+# - API Server: http://localhost:8000
+# - Web Dashboard: http://localhost:8080  
+# - Monitoring: http://localhost:9090 (Prometheus)
+# - Analytics: http://localhost:3000 (Grafana)
+# - Logs: http://localhost:5601 (Kibana)
+```
+
+#### 5. Direct Assessment Mode
+```bash
+# Run immediate assessment
+python3 hackgpt_v2.py \
+  --target example.com \
+  --scope "Web application and API" \
+  --auth-key "ENTERPRISE-2025-AUTH" \
+  --assessment-type black-box \
+  --compliance OWASP
+```
+
+## 🏗️ Enterprise Architecture
+
+### Core Components
+
+```mermaid
+graph TD
+    A[Load Balancer/Nginx] --> B[HackGPT API Gateway]
+    B --> C[Authentication Service]
+    B --> D[AI Engine Service] 
+    B --> E[Exploitation Service]
+    B --> F[Reporting Service]
+    
+    C --> G[LDAP/AD]
+    D --> H[OpenAI API]
+    D --> I[Local LLM]
+    D --> J[ML Models]
+    
+    E --> K[Parallel Processor]
+    F --> L[Report Generator]
+    
+    K --> M[Celery Workers]
+    M --> N[Redis Queue]
+    
+    B --> O[PostgreSQL]
+    B --> P[Redis Cache]
+    
+    Q[Prometheus] --> R[Grafana]
+    S[Elasticsearch] --> T[Kibana]
+```
+
+### Service Stack
+
+| Service | Purpose | Port | Technology |
+|---------|---------|------|------------|
+| **hackgpt-app** | Main application | 8000, 8080 | Python/Flask |
+| **hackgpt-worker** | Background tasks | - | Celery |
+| **hackgpt-database** | Data persistence | 5432 | PostgreSQL 15 |
+| **hackgpt-redis** | Cache & queues | 6379 | Redis 7 |
+| **prometheus** | Metrics collection | 9090 | Prometheus |
+| **grafana** | Monitoring dashboard | 3000 | Grafana |
+| **elasticsearch** | Log aggregation | 9200 | Elasticsearch |
+| **kibana** | Log visualization | 5601 | Kibana |
+| **consul** | Service discovery | 8500 | Consul |
+| **nginx** | Load balancer | 80, 443 | Nginx |
 
 ## 🔧 Configuration
 
-### AI Configuration
-HackGPT supports two AI modes:
+### Enterprise Configuration (`config.ini`)
 
-1. **Online Mode (OpenAI API)**:
-   ```bash
-   export OPENAI_API_KEY='your-api-key-here'
-   ```
+The configuration file supports 200+ options across multiple categories:
 
-2. **Offline Mode (Local LLM)**:
-   - Automatically installs Ollama
-   - Downloads Llama2 7B model
-   - Works without internet connection
+```ini
+[app]
+debug = false
+environment = production
+max_sessions = 100
 
-### Tool Configuration
-HackGPT automatically manages the following tools:
+[database]
+url = postgresql://hackgpt:hackgpt123@localhost:5432/hackgpt
+pool_size = 20
+backup_enabled = true
 
-**Network Tools**: nmap, masscan, netcat
-**Web Tools**: nikto, gobuster, whatweb, wpscan
-**Exploitation**: metasploit, sqlmap, hydra, searchsploit
-**Reconnaissance**: theharvester, enum4linux, dnsenum
-**Post-Exploitation**: linpeas, winpeas (auto-downloaded)
+[ai]
+openai_api_key = your_key_here
+openai_model = gpt-4
+enable_local_fallback = true
+confidence_threshold = 0.8
 
-## 🎯 Usage Examples
+[security]
+secret_key = your_secret_here
+jwt_algorithm = HS256
+rate_limit_enabled = true
 
-### Full Penetration Test
-```bash
-./hackgpt.py
-# Follow interactive prompts:
-# 1. Enter target: example.com
-# 2. Enter scope: Web application and infrastructure
-# 3. Enter authorization key: PENTEST-2024-AUTH
-# 4. Select "Full Pentest (All 6 Phases)"
+[ldap]
+server = ldaps://your-ldap-server.com:636
+bind_dn = cn=admin,dc=example,dc=com
+
+[compliance]
+frameworks = OWASP,NIST,ISO27001,SOC2,PCI-DSS
+auto_compliance_check = true
+
+[cloud]
+docker_host = unix:///var/run/docker.sock
+service_registry_backend = consul
 ```
 
-### Specific Phase Testing
+### Environment Variables (`.env`)
+
+Over 100 environment variables for enterprise deployment:
+
 ```bash
-./hackgpt.py
-# Select "Run Specific Phase"
-# Choose phase 1-6 based on your needs
+# Core Services
+DATABASE_URL=postgresql://hackgpt:hackgpt123@localhost:5432/hackgpt
+REDIS_URL=redis://localhost:6379/0
+OPENAI_API_KEY=your_openai_api_key
+
+# Security
+SECRET_KEY=your_secret_key
+JWT_SECRET_KEY=your_jwt_secret
+LDAP_SERVER=ldaps://your-ldap.com:636
+
+# Cloud Providers
+AWS_ACCESS_KEY_ID=your_aws_key
+AZURE_SUBSCRIPTION_ID=your_azure_id
+GCP_PROJECT_ID=your_gcp_project
+
+# Monitoring
+PROMETHEUS_ENDPOINT=http://localhost:9090
+GRAFANA_API_KEY=your_grafana_key
+ELASTICSEARCH_ENDPOINT=http://localhost:9200
 ```
 
-### Web Dashboard
-```bash
-./hackgpt.py --web
-# Open browser to http://localhost:5000
-```
+## 🎯 Enterprise Penetration Testing
 
-### Voice Commands
-```bash
-./hackgpt.py --voice
-# Say: "Start full pentest"
-# Say: "View reports" 
-# Say: "Exit"
-```
+### Enhanced 6-Phase Methodology
 
-## 📋 Penetration Testing Phases
+#### Phase 1: Intelligence Gathering & Reconnaissance
+**Enterprise Features**:
+- AI-powered OSINT automation
+- Multi-source data aggregation
+- Threat intelligence correlation
+- Cloud asset discovery (AWS, Azure, GCP)
+- **Tools**: theHarvester, Amass, Subfinder, Shodan API
 
-### Phase 1: Planning & Reconnaissance
-**Tools Used**: theHarvester, whois, dnsenum, nmap, masscan
-- Passive OSINT collection
-- Domain and subdomain enumeration
-- Service discovery and version detection
-- **AI Analysis**: Attack surface identification, priority targeting
+#### Phase 2: Advanced Scanning & Enumeration  
+**Enterprise Features**:
+- Parallel distributed scanning
+- Service fingerprinting with ML classification
+- Vulnerability correlation across assets
+- Zero-day pattern detection
+- **Tools**: Nmap, Masscan, Nuclei, HTTPx, Naabu
 
-### Phase 2: Scanning & Enumeration
-**Tools Used**: nmap (vuln scripts), nikto, gobuster, whatweb, enum4linux
-- Vulnerability scanning
-- Web application enumeration
-- SMB/NetBIOS enumeration
-- **AI Analysis**: CVE correlation, exploit recommendations
+#### Phase 3: Vulnerability Assessment
+**Enterprise Features**:
+- CVSS v3.1 automated scoring
+- Business impact analysis
+- Exploit availability assessment  
+- Compliance framework mapping
+- **Tools**: OpenVAS, Nexpose integration, custom scanners
 
-### Phase 3: Exploitation
-**Tools Used**: searchsploit, sqlmap, hydra, metasploit
-- Safe exploitation attempts
-- SQL injection testing
-- Brute force attacks (rate-limited)
-- **AI Analysis**: Risk-based exploit selection, impact assessment
-
-### Phase 4: Post-Exploitation
-**Tools Used**: linpeas, winpeas, netcat
+#### Phase 4: Exploitation & Post-Exploitation
+**Enterprise Features**:
+- Safe-mode exploitation with approval workflows
 - Privilege escalation enumeration
-- Credential harvesting
-- Lateral movement assessment
-- **AI Analysis**: Business impact analysis, persistence strategies
+- Lateral movement mapping
+- Data exfiltration simulation
+- **Tools**: Metasploit, CrackMapExec, BloodHound, custom exploits
 
-### Phase 5: Reporting
-- AI-generated executive summary
+#### Phase 5: Enterprise Reporting & Analytics
+**Enterprise Features**:
+- Executive dashboard with KPIs
 - Technical vulnerability details
-- CVSS scoring and remediation
-- **Output Formats**: Markdown, JSON, PDF
+- Compliance gap analysis
+- Risk prioritization matrix
+- **Outputs**: HTML, PDF, JSON, XML, compliance reports
 
-### Phase 6: Retesting
-- Focused re-testing of remediated vulnerabilities
-- Validation of security fixes
-- **AI Analysis**: Remediation verification, residual risk assessment
+#### Phase 6: Verification & Retesting
+**Enterprise Features**:
+- Automated remediation verification
+- Regression testing for fixes
+- Continuous security monitoring
+- Trend analysis and metrics
+- **Features**: Scheduled retests, delta reporting
 
-## 🛡️ Security Features
+## 📊 Enterprise Interfaces
 
-### Authorization Controls
-- Mandatory authorization key before active testing
-- Confirmation prompts for high-impact operations
-- No automatic exploitation without user approval
+### 1. Command Line Interface (CLI)
+```bash
+# Interactive enterprise mode
+python3 hackgpt_v2.py
+
+# Available options:
+# 1. Full Enterprise Pentest (All 6 Phases)
+# 2. Run Specific Phase
+# 3. Custom Assessment Workflow
+# 4. View Reports & Analytics
+# 5. Real-time Dashboard
+# 6. User & Permission Management
+# 7. System Configuration
+# 8. Compliance Management
+# 9. Cloud & Container Management
+# 10. AI Engine Configuration
+```
+
+### 2. REST API Server
+```bash
+# Start API server
+python3 hackgpt_v2.py --api
+
+# Available endpoints:
+# GET  /api/health - Health check
+# POST /api/pentest/start - Start assessment
+# GET  /api/sessions - List sessions
+# GET  /api/reports/{id} - Get report
+# POST /api/users - User management
+# GET  /api/compliance - Compliance status
+```
+
+### 3. Web Dashboard
+```bash
+# Start web dashboard
+python3 hackgpt_v2.py --web
+
+# Features:
+# - Real-time assessment monitoring
+# - Interactive vulnerability management
+# - Executive summary dashboard
+# - User and role management
+# - System configuration
+# - Compliance reporting
+```
+
+### 4. Voice Commands (Enterprise)
+```bash
+# Voice command mode
+python3 hackgpt_v2.py --voice
+
+# Supported commands:
+# "Start enterprise assessment of example.com"
+# "Show compliance dashboard"
+# "Generate executive report"
+# "Scale worker pool to 10"
+```
+
+## 🔐 Enterprise Security
+
+### Authentication & Authorization
+- **Multi-Factor Authentication**: LDAP/AD + JWT tokens
+- **Role-Based Access Control**: Granular permissions matrix
+- **Session Management**: Secure session handling with timeout
+- **API Security**: Rate limiting, CORS, input validation
 
 ### Data Protection
-- Authorization keys stored in memory only
-- No sensitive data in logs
-- Results saved locally with proper permissions
+- **Encryption**: AES-256-GCM for data at rest
+- **Transport Security**: TLS 1.3 for data in transit  
+- **Key Management**: Automated key rotation
+- **Audit Logging**: Comprehensive activity tracking
 
-### Rate Limiting
-- Built-in delays for brute force attacks
-- Respectful scanning speeds
-- Timeout controls for all operations
+### Compliance Frameworks
+| Framework | Coverage | Reports | Automation |
+|-----------|----------|---------|------------|
+| **OWASP Top 10** | ✅ Full | ✅ Yes | ✅ Automated |
+| **NIST Cybersecurity Framework** | ✅ Full | ✅ Yes | ✅ Automated |
+| **ISO 27001** | ✅ Partial | ✅ Yes | ✅ Semi-automated |
+| **SOC 2** | ✅ Partial | ✅ Yes | ✅ Semi-automated |
+| **PCI DSS** | ✅ Partial | ✅ Yes | ✅ Manual |
 
-## 📊 Report Examples
+## 📈 Monitoring & Analytics
 
-### Executive Summary
-```
-High-Risk Vulnerabilities Found: 3
-Medium-Risk Vulnerabilities Found: 7
-Recommended Priority Actions:
-1. Patch SQL injection in login form
-2. Update outdated web server
-3. Implement input validation
-```
+### Real-Time Monitoring
+- **System Metrics**: CPU, memory, disk, network utilization
+- **Application Metrics**: Request rates, response times, error rates
+- **Security Metrics**: Vulnerability counts, risk scores, remediation rates
+- **Business Metrics**: Assessment coverage, compliance scores
 
-### Technical Report
-```
-CVE-2023-1234: SQL Injection
-CVSS Score: 9.1 (Critical)
-Location: /login.php parameter 'username'
-Proof: ' UNION SELECT user,pass FROM admin--
-Recommendation: Use parameterized queries
-```
+### Alerting
+- **Email Alerts**: Critical vulnerabilities, system issues
+- **Slack Integration**: Real-time notifications to security teams
+- **Webhook Support**: Custom integrations with SIEM systems
+- **Dashboard Alerts**: Visual indicators and notifications
 
-## 🚧 Development
-
-### Project Structure
-```
-HackGPT/
-├── hackgpt.py          # Main application
-├── install.sh          # Installation script
-├── requirements.txt    # Python dependencies
-├── templates/          # Web dashboard templates
-├── reports/           # Generated reports
-└── README.md          # This file
-```
-
-### Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Test on Kali Linux
-4. Submit a pull request
-
-### Testing
+### Analytics Dashboard
 ```bash
-# Test CLI mode
-./hackgpt.py --target testphp.vulnweb.com --scope "Test site" --auth-key "TEST"
+# Access Grafana dashboard
+http://localhost:3000
+# Login: admin / hackgpt123
 
-# Test web dashboard
-./hackgpt.py --web
-
-# Test voice commands
-./hackgpt.py --voice
+# Pre-configured dashboards:
+# - HackGPT System Overview
+# - Assessment Performance Metrics  
+# - Vulnerability Trend Analysis
+# - User Activity Dashboard
+# - Compliance Status Overview
 ```
 
-## 📚 Advanced Usage
+## 🛠️ Advanced Usage
 
-### Custom Tool Integration
-Add new tools to the `TOOL_COMMANDS` dictionary:
+### Custom AI Models
 ```python
-TOOL_COMMANDS = {
-    'your-tool': 'sudo apt install -y your-tool',
-    # ... existing tools
-}
+# Configure custom AI endpoints
+config['ai']['custom_model_endpoint'] = 'http://your-llm:8000'
+config['ai']['model_type'] = 'custom'
 ```
 
-### Custom AI Prompts
-Modify AI prompts in the `_create_prompt` method for specialized analysis.
+### Custom Compliance Frameworks
+```python
+# Add custom compliance framework
+from security.compliance import ComplianceFrameworkMapper
 
-### Web Dashboard Customization
-Modify `templates/dashboard.html` for custom web interface.
+mapper = ComplianceFrameworkMapper()
+mapper.add_framework('CUSTOM', {
+    'sql_injection': 'SEC-01',
+    'xss': 'SEC-02',
+    # ... custom mappings
+})
+```
 
-## ⚠️ Legal Disclaimer
+### Kubernetes Deployment
+```yaml
+# Deploy to Kubernetes cluster
+kubectl apply -f k8s/
+```
 
-**IMPORTANT**: HackGPT is designed for authorized penetration testing only. 
-
-- Only use against systems you own or have explicit written permission to test
-- Obtain proper authorization before conducting any security tests
-- Follow responsible disclosure practices
-- Comply with all applicable laws and regulations
-
-The developers are not responsible for any misuse of this tool.
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue**: "Tool not found"
-**Solution**: Run `./install.sh` again or manually install missing tools
-
-**Issue**: "AI not responding"
-**Solution**: Check internet connection or verify API key
-
-**Issue**: "Permission denied"
-**Solution**: Run with proper sudo privileges or check file permissions
-
-**Issue**: "Ollama model not found"
-**Solution**: Run `ollama pull llama2:7b` manually
-
-### Debug Mode
-Enable verbose output:
+### Multi-Cloud Deployment
 ```bash
-export PYTHONPATH=$PWD
-python3 -m pdb hackgpt.py
+# Deploy to AWS
+python3 hackgpt_v2.py --deploy aws
+
+# Deploy to Azure  
+python3 hackgpt_v2.py --deploy azure
+
+# Deploy to GCP
+python3 hackgpt_v2.py --deploy gcp
 ```
 
-## 🔄 Version History
+## 🧪 Testing & Development
 
-- **v1.0.0**: Initial release with full 6-phase pentesting
-- **v1.1.0**: Added web dashboard and voice commands
-- **v1.2.0**: Enhanced AI analysis and reporting
+### Running Tests
+```bash
+# Unit tests
+pytest tests/unit/
 
-## 📞 Support
+# Integration tests  
+pytest tests/integration/
 
-- **Issues**: Open a GitHub issue
-- **Discussions**: GitHub Discussions
-- **Security**: Email security@hackgpt.dev
+# End-to-end tests
+pytest tests/e2e/
 
-## 📄 License
+# Security tests
+bandit -r .
+safety check
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Development Setup
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
 
-## 🙏 Acknowledgments
+# Pre-commit hooks
+pre-commit install
 
-- OpenAI for GPT API
+# Code formatting
+black .
+flake8 .
+mypy .
+```
+
+## 📦 Enterprise Deployment
+
+### Docker Swarm
+```bash
+# Initialize swarm
+docker swarm init
+
+# Deploy stack
+docker stack deploy -c docker-compose.yml hackgpt
+```
+
+### Kubernetes
+```bash
+# Create namespace
+kubectl create namespace hackgpt
+
+# Deploy applications
+kubectl apply -f k8s/
+
+# Scale workers
+kubectl scale deployment hackgpt-worker --replicas=10
+```
+
+### Cloud Platforms
+
+#### AWS Deployment
+```bash
+# ECS deployment
+aws ecs create-cluster --cluster-name hackgpt
+aws ecs create-service --service-name hackgpt-api
+```
+
+#### Azure Deployment  
+```bash
+# ACI deployment
+az container create --resource-group hackgpt --name hackgpt-api
+```
+
+#### GCP Deployment
+```bash
+# GKE deployment
+gcloud container clusters create hackgpt-cluster
+kubectl apply -f k8s/
+```
+
+## 🔧 Troubleshooting
+
+### Common Enterprise Issues
+
+#### Database Connection Issues
+```bash
+# Check PostgreSQL status
+systemctl status postgresql
+docker logs hackgpt-database
+
+# Test connection
+python3 -c "from database import get_db_manager; print(get_db_manager().test_connection())"
+```
+
+#### Redis Cache Issues
+```bash
+# Check Redis status
+redis-cli ping
+docker logs hackgpt-redis
+
+# Clear cache
+redis-cli FLUSHALL
+```
+
+#### AI Engine Issues
+```bash
+# Test OpenAI connectivity
+python3 -c "import openai; print(openai.Model.list())"
+
+# Check local LLM
+ollama list
+ollama run llama2:7b
+```
+
+#### Worker Pool Issues
+```bash
+# Check Celery workers
+celery -A performance.parallel_processor inspect active
+
+# Restart workers
+docker-compose restart hackgpt-worker
+```
+
+### Performance Optimization
+```bash
+# Database optimization
+python3 -c "from database import optimize_database; optimize_database()"
+
+# Cache warming
+python3 -c "from performance.cache_manager import warm_cache; warm_cache()"
+
+# Worker scaling
+docker-compose up --scale hackgpt-worker=10
+```
+
+## 📄 Enterprise License
+
+This project is licensed under the MIT License with additional enterprise terms:
+
+- **Commercial Use**: Permitted with attribution
+- **Enterprise Support**: Available through support channels
+- **Compliance**: Tool usage must comply with applicable laws
+- **Liability**: Limited liability for enterprise deployments
+
+## 🆘 Enterprise Support
+
+### Support Channels
+- **Enterprise Support**: yashabalam707@gmail.com
+- **Technical Issues**: https://github.com/yashab-cyber/HackGPT/issues
+- **Feature Requests**: https://github.com/yashab-cyber/HackGPT/discussions
+- **Security Issues**: yashabalam707@gmail.com
+- **WhatsApp Business**: [Join Channel](https://whatsapp.com/channel/0029Vaoa1GfKLaHlL0Kc8k1q)
+
+### Professional Services
+- **Implementation**: Custom deployment and configuration
+- **Training**: Security team training and certification  
+- **Custom Development**: Feature development and integration
+- **24/7 Support**: Enterprise support packages available
+
+### Connect with the Team
+- **Yashab Alam**: [GitHub](https://github.com/yashab-cyber) | [Instagram](https://www.instagram.com/yashab.alam) | [LinkedIn](https://www.linkedin.com/in/yashab-alam)
+- **ZehraSec**: [Website](https://www.zehrasec.com) | [Instagram](https://www.instagram.com/_zehrasec) | [LinkedIn](https://www.linkedin.com/company/zehrasec)
+
+## 📊 Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Total Lines of Code** | 15,000+ |
+| **Enterprise Dependencies** | 90+ |
+| **Configuration Options** | 200+ |
+| **Environment Variables** | 100+ |
+| **Docker Services** | 12 |
+| **Supported Compliance Frameworks** | 5 |
+| **Penetration Testing Tools** | 50+ |
+| **API Endpoints** | 25+ |
+| **Deployment Platforms** | 6+ |
+
+## 🗺️ Roadmap
+
+### Version 2.1 (Q3 2025)
+- [ ] Advanced threat hunting capabilities
+- [ ] ML-based false positive reduction
+- [ ] Integration with popular SIEM systems
+- [ ] Mobile application for executives
+
+### Version 2.2 (Q4 2025) 
+- [ ] Automated penetration testing workflows
+- [ ] Advanced cloud security assessments
+- [ ] Integration with CI/CD pipelines
+- [ ] Enhanced compliance reporting
+
+### Version 3.0 (Q1 2026)
+- [ ] Fully autonomous security assessments
+- [ ] Advanced AI attack simulation
+- [ ] Quantum-safe cryptography
+- [ ] Next-generation threat detection
+
+## 🙏 Contributors
+
+### Core Development Team
+- **Lead Developer & Founder**: [Yashab Alam](https://github.com/yashab-cyber) - [@yashab.alam](https://www.instagram.com/yashab.alam) | [LinkedIn](https://www.linkedin.com/in/yashab-alam)
+- **Company**: [ZehraSec](https://www.zehrasec.com) - Cybersecurity Solutions & Research
+- **AI/ML Engineer**: Enterprise AI Team
+- **Security Engineer**: Enterprise Security Team
+- **DevOps Engineer**: Enterprise Infrastructure Team
+
+### ZehraSec Social Media
+- 🌐 **Website**: [www.zehrasec.com](https://www.zehrasec.com)
+- 📸 **Instagram**: [@_zehrasec](https://www.instagram.com/_zehrasec?igsh=bXM0cWl1ejdoNHM4)
+- 📘 **Facebook**: [ZehraSec Official](https://www.facebook.com/profile.php?id=61575580721849)
+- 🐦 **X (Twitter)**: [@zehrasec](https://x.com/zehrasec?t=Tp9LOesZw2d2yTZLVo0_GA&s=08)
+- 💼 **LinkedIn**: [ZehraSec Company](https://www.linkedin.com/company/zehrasec)
+- 💬 **WhatsApp**: [Business Channel](https://whatsapp.com/channel/0029Vaoa1GfKLaHlL0Kc8k1q)
+
+### Acknowledgments
+- OpenAI for GPT-4 API access
 - Ollama team for local LLM support
-- Kali Linux team for the platform
-- Security community for tools and techniques
+- Docker & Kubernetes communities
+- Security research community
+- Open source tool developers
+
+### 💰 Support HackGPT Development
+Your donations help accelerate development and support the growing cybersecurity community:
+
+**Cryptocurrency Donations (Recommended):**
+- **Solana (SOL)**: `5pEwP9JN8tRCXL5Vc9gQrxRyHHyn7J6P2DCC8cSQKDKT`
+- **Bitcoin (BTC)**: `bc1qmkptg6wqn9sjlx6wf7dk0px0yq4ynr4ukj2x8c`
+
+**Traditional Payment:**
+- **PayPal**: [yashabalam707@gmail.com](https://paypal.me/yashab07)
+- **Email**: yashabalam707@gmail.com
+
+**📄 Full Donation Information**: [DONATE.md](DONATE.md) - Support tiers, funding goals, and recognition programs
+
+## ⚖️ Legal & Compliance
+
+**⚠️ IMPORTANT LEGAL NOTICE**
+
+HackGPT Enterprise is designed for authorized security testing only:
+
+- ✅ **Authorized Use**: Only use against systems you own or have explicit written permission
+- ✅ **Compliance**: Follow all applicable laws, regulations, and industry standards
+- ✅ **Responsible Disclosure**: Report vulnerabilities through proper channels
+- ✅ **Documentation**: Maintain audit trails and documentation
+- ❌ **Unauthorized Use**: Never use against systems without permission
+- ❌ **Malicious Activity**: Not for criminal or malicious purposes
+
+**The developers and contributors are not liable for misuse of this platform.**
 
 ---
 
-<p align="center">
-  <strong>Made with ❤️ for the ethical hacking community</strong>
-</p>
+---
+
+<div align="center">
+  <img src="public/hackgpt-logo.png" alt="HackGPT Enterprise" width="150" height="auto">
+  
+  <h3>🚀 HackGPT Enterprise - Transforming Cybersecurity Through AI 🚀</h3>
+  <p><em>Made with ❤️ by Yashab Alam & ZehraSec for enterprise security teams worldwide</em></p>
+  
+  <p>
+    <a href="https://github.com/yashab-cyber/HackGPT">⭐ Star us on GitHub</a> |
+    <a href="DONATE.md">💰 Support Development</a> |
+    <a href="#-enterprise-support">📞 Get Support</a> |
+    <a href="#-contributors">🤝 Contribute</a> |
+    <a href="LICENSE">📄 License</a>
+  </p>
+</div>
+
+### 🔗 Connect with ZehraSec & Yashab Alam
+
+<div align="center">
+  <p>
+    <a href="https://www.zehrasec.com">🌐 ZehraSec Website</a> |
+    <a href="https://www.instagram.com/_zehrasec">📸 ZehraSec Instagram</a> |
+    <a href="https://www.linkedin.com/company/zehrasec">💼 ZehraSec LinkedIn</a> |
+    <a href="https://whatsapp.com/channel/0029Vaoa1GfKLaHlL0Kc8k1q">💬 WhatsApp Business</a>
+  </p>
+  
+  <p>
+    <strong>Founder & Lead Developer:</strong><br>
+    <a href="https://github.com/yashab-cyber">🔧 Yashab Alam GitHub</a> |
+    <a href="https://www.instagram.com/yashab.alam">📸 Personal Instagram</a> |
+    <a href="https://www.linkedin.com/in/yashab-alam">💼 LinkedIn Profile</a>
+  </p>
+</div>

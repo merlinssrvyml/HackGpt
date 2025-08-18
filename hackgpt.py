@@ -1,63 +1,198 @@
 #!/usr/bin/env python3
 """
-HackGPT - AI-Powered Penetration Testing Automation Tool
+HackGPT - Enterprise AI-Powered Penetration Testing Platform
 Author: HackGPT Team
-Version: 1.0.0
-Description: Production-ready pentesting automation tool for Kali Linux
+Version: 2.0.0 (Production-Ready)
+Description: Enterprise-grade pentesting automation platform with advanced AI, microservices architecture,
+            and cloud-native capabilities for professional security assessments.
+
+Features:
+- Advanced AI Engine with ML pattern recognition
+- Enterprise authentication and RBAC
+- Real-time analytics and reporting
+- Microservices architecture with Docker/Kubernetes support
+- Performance optimization with caching and parallel processing
+- Database persistence with PostgreSQL
+- Compliance framework integration (OWASP, NIST, ISO27001, SOC2)
+- Zero-day detection with behavioral analysis
 """
 
 import os
 import sys
 import json
 import time
-import subprocess
+import asyncio
 import argparse
 import logging
-from datetime import datetime
+import configparser
+from datetime import datetime, timedelta
 from pathlib import Path
 import threading
 import queue
 import hashlib
+import uuid
+from typing import Dict, List, Any, Optional, Union
 
-# Required imports
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
+# Core imports
 try:
     import requests
     import openai
+    import subprocess
     from rich.console import Console
     from rich.table import Table
     from rich.panel import Panel
-    from rich.progress import Progress, SpinnerColumn, TextColumn
+    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
     from rich.prompt import Prompt, Confirm
     from rich.markdown import Markdown
+    from rich.live import Live
+    from rich.layout import Layout
     import speech_recognition as sr
     import pyttsx3
     import pypandoc
     import cvsslib
-    from flask import Flask, render_template, request, jsonify
-    import threading
+    from flask import Flask, render_template, request, jsonify, session
+    from flask_cors import CORS
+    import redis
+    import psycopg2
+    import sqlalchemy
+    from celery import Celery
+    import docker
+    import kubernetes
+    import consul
+    import jwt
+    import bcrypt
+    from ldap3 import Server, Connection, ALL
+    import numpy as np
+    import pandas as pd
+    import matplotlib
+    matplotlib.use('Agg')  # Non-interactive backend
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from sklearn.cluster import DBSCAN
+    from sklearn.ensemble import IsolationForest
+    import websockets
+    import aiohttp
 except ImportError as e:
     print(f"Missing required package: {e}")
-    print("Installing required packages...")
-    subprocess.run([sys.executable, "-m", "pip", "install", 
-                   "requests", "openai", "rich", "speechrecognition", 
-                   "pyttsx3", "pypandoc", "cvss", "flask"], check=True)
-    # Retry imports
-    import requests
-    import openai
-    from rich.console import Console
-    from rich.table import Table
-    from rich.panel import Panel
-    from rich.progress import Progress, SpinnerColumn, TextColumn
-    from rich.prompt import Prompt, Confirm
-    from rich.markdown import Markdown
-    import speech_recognition as sr
-    import pyttsx3
-    import pypandoc
-    import cvsslib
-    from flask import Flask, render_template, request, jsonify
+    print("Please run: pip install -r requirements.txt")
+    sys.exit(1)
+
+# Import our custom modules
+try:
+    from database import get_db_manager, PentestSession, Vulnerability, User, AuditLog
+    from ai_engine import get_advanced_ai_engine
+    from security import EnterpriseAuth, ComplianceFrameworkMapper
+    from exploitation import AdvancedExploitationEngine, ZeroDayDetector
+    from reporting import DynamicReportGenerator, get_realtime_dashboard
+    from cloud import DockerManager, KubernetesManager, ServiceRegistry
+    from performance import get_cache_manager, get_parallel_processor
+except ImportError as e:
+    print(f"Missing HackGPT modules: {e}")
+    print("Please ensure all modules are properly installed")
+    sys.exit(1)
 
 # Initialize Rich Console
 console = Console()
+
+# Configuration
+class Config:
+    """Application configuration"""
+    
+    def __init__(self, config_file: str = "config.ini"):
+        self.config = configparser.ConfigParser()
+        self.config_file = config_file
+        self.load_config()
+        
+        # Environment variables override config file
+        self.DATABASE_URL = os.getenv("DATABASE_URL", self.config.get("database", "url", fallback="postgresql://hackgpt:hackgpt123@localhost:5432/hackgpt"))
+        self.REDIS_URL = os.getenv("REDIS_URL", self.config.get("cache", "redis_url", fallback="redis://localhost:6379/0"))
+        self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", self.config.get("ai", "openai_api_key", fallback=""))
+        self.SECRET_KEY = os.getenv("SECRET_KEY", self.config.get("security", "secret_key", fallback=str(uuid.uuid4())))
+        self.LDAP_SERVER = os.getenv("LDAP_SERVER", self.config.get("ldap", "server", fallback=""))
+        self.LDAP_BIND_DN = os.getenv("LDAP_BIND_DN", self.config.get("ldap", "bind_dn", fallback=""))
+        self.LDAP_BIND_PASSWORD = os.getenv("LDAP_BIND_PASSWORD", self.config.get("ldap", "bind_password", fallback=""))
+        
+        # Application settings
+        self.DEBUG = self.config.getboolean("app", "debug", fallback=False)
+        self.LOG_LEVEL = self.config.get("app", "log_level", fallback="INFO")
+        self.MAX_WORKERS = self.config.getint("performance", "max_workers", fallback=10)
+        self.ENABLE_VOICE = self.config.getboolean("features", "enable_voice", fallback=True)
+        self.ENABLE_WEB_DASHBOARD = self.config.getboolean("features", "enable_web_dashboard", fallback=True)
+        self.ENABLE_REALTIME_DASHBOARD = self.config.getboolean("features", "enable_realtime_dashboard", fallback=True)
+        
+        # Cloud settings
+        self.DOCKER_HOST = os.getenv("DOCKER_HOST", self.config.get("cloud", "docker_host", fallback="unix:///var/run/docker.sock"))
+        self.KUBERNETES_CONFIG = os.getenv("KUBECONFIG", self.config.get("cloud", "kubernetes_config", fallback=""))
+        self.SERVICE_REGISTRY_BACKEND = self.config.get("cloud", "service_registry_backend", fallback="memory")
+        
+    def load_config(self):
+        """Load configuration from file"""
+        if os.path.exists(self.config_file):
+            self.config.read(self.config_file)
+        else:
+            # Create default config
+            self.create_default_config()
+    
+    def create_default_config(self):
+        """Create default configuration file"""
+        self.config.add_section("app")
+        self.config.set("app", "debug", "false")
+        self.config.set("app", "log_level", "INFO")
+        
+        self.config.add_section("database")
+        self.config.set("database", "url", "postgresql://hackgpt:hackgpt123@localhost:5432/hackgpt")
+        
+        self.config.add_section("cache")
+        self.config.set("cache", "redis_url", "redis://localhost:6379/0")
+        
+        self.config.add_section("ai")
+        self.config.set("ai", "openai_api_key", "")
+        self.config.set("ai", "local_model", "llama2:7b")
+        
+        self.config.add_section("security")
+        self.config.set("security", "secret_key", str(uuid.uuid4()))
+        self.config.set("security", "jwt_algorithm", "HS256")
+        self.config.set("security", "jwt_expiry", "3600")
+        
+        self.config.add_section("ldap")
+        self.config.set("ldap", "server", "")
+        self.config.set("ldap", "bind_dn", "")
+        self.config.set("ldap", "bind_password", "")
+        
+        self.config.add_section("performance")
+        self.config.set("performance", "max_workers", "10")
+        self.config.set("performance", "cache_ttl", "3600")
+        
+        self.config.add_section("features")
+        self.config.set("features", "enable_voice", "true")
+        self.config.set("features", "enable_web_dashboard", "true")
+        self.config.set("features", "enable_realtime_dashboard", "true")
+        
+        self.config.add_section("cloud")
+        self.config.set("cloud", "docker_host", "unix:///var/run/docker.sock")
+        self.config.set("cloud", "kubernetes_config", "")
+        self.config.set("cloud", "service_registry_backend", "memory")
+        
+        with open(self.config_file, 'w') as f:
+            self.config.write(f)
+
+# Initialize configuration
+config = Config()
+
+# Setup logging
+logging.basicConfig(
+    level=getattr(logging, config.LOG_LEVEL),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('/var/log/hackgpt.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('hackgpt')
 
 # ASCII Banner
 BANNER = """
@@ -69,8 +204,9 @@ BANNER = """
     ██║  ██║██║  ██║╚██████╗██║  ██╗╚██████╔╝██║        ██║   
     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝        ╚═╝   
 [/bold red]
-[bold cyan]           AI-Powered Penetration Testing Automation Tool[/bold cyan]
-[dim]                      Running on Kali Linux[/dim]
+[bold cyan]      Enterprise AI-Powered Penetration Testing Platform v2.0[/bold cyan]
+[bold green]        Production-Ready | Cloud-Native | AI-Enhanced[/bold green]
+[dim]                    Advanced Security Assessment Platform[/dim]
 """
 
 class AIEngine:
