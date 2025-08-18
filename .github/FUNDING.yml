@@ -1,0 +1,25 @@
+# GitHub Sponsors & Funding Configuration for HackGPT Enterprise
+# This file enables the funding/sponsor button on the GitHub repository
+
+# Primary funding platforms
+github: [yashab-cyber] # GitHub Sponsors profile for Yashab Alam
+patreon: # Add Patreon username if available
+open_collective: # Add Open Collective project name if available
+ko_fi: # Add Ko-fi username if available
+tidelift: # Add Tidelift package name if available
+community_bridge: # Add Community Bridge project name if available
+liberapay: # Add Liberapay username if available
+issuehunt: # Add IssueHunt username if available
+otechie: # Add Otechie username if available
+
+# Custom funding methods
+custom: [
+  "https://paypal.me/yashab07",
+  "https://www.zehrasec.com/donate",
+  "mailto:yashabalam707@gmail.com?subject=HackGPT%20Enterprise%20Sponsorship%20Inquiry"
+]
+
+# Cryptocurrency donation addresses (displayed via custom links)
+# Solana: 5pEwP9JN8tRCXL5Vc9gQrxRyHHyn7J6P2DCC8cSQKDKT
+# Bitcoin: bc1qmkptg6wqn9sjlx6wf7dk0px0yq4ynr4ukj2x8c
+# For more crypto options, see DONATE.md
